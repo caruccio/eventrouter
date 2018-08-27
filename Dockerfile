@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM alpine:3.4
+FROM gcr.io/heptio-images/golang:1.9-alpine3.6
 MAINTAINER Timothy St. Clair "tstclair@heptio.com"  
 
 RUN apk update --no-cache && apk add ca-certificates
-ADD eventrouter /eventrouter 
+ADD . /go/src/github.com/heptiolabs/eventrouter
+WORKDIR /go/src/github.com/heptiolabs/eventrouter
+RUN go build
 USER nobody:nobody
 
 CMD ["/bin/sh", "-c", "/eventrouter -v 3 -logtostderr"]
